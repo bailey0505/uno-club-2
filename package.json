@@ -1,0 +1,33 @@
+{
+  "name": "uno-club",
+  "version": "1.0.0",
+  "description": "Website for the point park uno club",
+  "main": "controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bailey0505/uno-club.git"
+  },
+  "keywords": [
+    "Uno;",
+    "Point",
+    "Park;",
+    "Web-application-developement;"
+  ],
+  "author": "Bailey Rotellini, Tony Reina, Gavin Starr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bailey0505/uno-club/issues"
+  },
+  "homepage": "https://github.com/bailey0505/uno-club#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "mongodb": "^3.3.3",
+    "mysql": "^2.17.1"
+  }
+}
