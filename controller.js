@@ -26,6 +26,7 @@ var login = require('./framework/login.js');
 var register = require('./framework/register.js');
 var sqlcredentials = require('./framework/sql.js');
 var session_key = require('./framework/session.js');
+var PageVars = require('./framework/PageInfo.js');
 
 var app = express();
 
@@ -60,12 +61,13 @@ app.set('port', process.env.PORT || 3000);
 
 
 app.get('/', function(req, res) {
-    
-    
+    var log = PageVars.GetPageInfo("IntroText", "HomePage");
+    console.log(log);
  res.render('home', {
      pictures: modules.getunopics(),
      login: req.session.loggedin,
      username: req.session.username,
+     thankyou :  req.session.thankyou
  });
 
 });
@@ -93,7 +95,8 @@ app.get('/login', function(req, res) {
 });
 app.get('/register', function(req, res) {
  res.render('register', {
-     incorrect_email :  req.session.incorrect_email
+     incorrect_email :  req.session.incorrect_email,
+     unmatched_pass : req.session.unmatched_pass,
  });
 
 });
@@ -124,12 +127,10 @@ app.post('/auth', (req, res) => {
         conn.query(sql, function(err, results, fields) {
         //query checks if the user actually exists with that password, if yes sets the session vars and redirects them back to home page
         if(results.length > 0) {
-            console.log('success if');
             req.session.loggedin = 'true';
             req.session.username = username;
             delete req.session.incoorect;
             res.redirect('/');
-            
         }else{
         //happens if user has wrong password or username, activates the pop up for incorrect username or password
          req.session.username = '';
@@ -146,22 +147,63 @@ app.post('/auth', (req, res) => {
 //Adding new user, written by bailey 
 app.post('/registeruser?', (req, res) =>{
     //Grabbing Variables from page
+    
     var name =  req.body.name;
     var email =  req.body.email;
     var username =  req.body.username;
     var password =  req.body.password;
     var password_retype = req.body.passwordr;
+    
+    var user = {
+        name : req.body.name,
+        email : req.body.email,
+        username : req.body.username,
+        password : req.body.password
+    }
     //test to see if variables were coming through
     //console.log(name + email + username + password + password_retype);
     
     //Now to process the variables to see if they are what we need. Going to check if email is an actual email and if password retype is correct 
-  if(validator.isEmail(email) === false) {
+  if(validator.isEmail(email) === false || password !== password_retype) {
       //activates session var Improper email
       req.session.incorrect_email = "on"; 
       res.redirect('/register');
   } else{
       //deletes incorrect_email session var on second try if they do enter a correct one 
-     delete req.session.incorrect_email; 
+      delete req.session.incorrect_email; 
+      
+      
+      
+      
+      var conn = mysql.createConnection(sqlcredentials.connection);
+    conn.connect(function(err) {
+    if (err) {
+        console.error("ERROR: cannot connect: " + err);
+        return;
+    }  
+      //creating sql var for query, query grabs the username and passoword from sql if it is equal to user input 
+      var sql = mysql.format("INSERT INTO users SET ?", user);
+      //test log to see what the qeury will be 
+      //console.log(sql);
+    conn.query(sql, function(err, results, fields) {
+       if (err) {
+        res.session.error_with_login = "on";
+        res.redirect('/register');
+        } else {
+            req.session.thankyou = "on";
+           res.redirect("/");
+           console.log("success");
+        }
+    }) 
+        
+     conn.end(); 
+  });
+   
+
+      
+      //Now inserts The user
+      
+      
     }
     
    
