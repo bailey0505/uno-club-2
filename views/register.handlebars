@@ -1,7 +1,10 @@
 <div id="register-page" style="text-align: center; color: white; margin-top: 10px;" data-aos="fade-in">
-    {{#if incorrect_email}}
-        <div class="alert alert-danger" role="alert" style="margin-top: 5px;">
-            You entered something wrong when trying to register, please try again!
+    {{#if error}}
+       <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+          {{ error }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
     {{/if}}
     <h1>Fill out the form below to Register</h1>

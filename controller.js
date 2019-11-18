@@ -26,7 +26,7 @@ var login = require('./framework/login.js');
 var register = require('./framework/register.js');
 var sqlcredentials = require('./framework/sql.js');
 var session_key = require('./framework/session.js');
-var PageVars = require('./framework/PageInfo.js');
+//var PageVars = require('./framework/PageInfo.js');
 
 var app = express();
 
@@ -61,14 +61,17 @@ app.set('port', process.env.PORT || 3000);
 
 
 app.get('/', function(req, res) {
-    var log = PageVars.GetPageInfo("IntroText", "HomePage");
-    console.log(log);
- res.render('home', {
-     pictures: modules.getunopics(),
-     login: req.session.loggedin,
-     username: req.session.username,
-     thankyou :  req.session.thankyou
- });
+   // var log = PageVars.GetPageInfo("IntroText", "HomePage");
+   // console.log(log);
+    // PageVars.GetPageInfo("IntroText", "HomePage", function(introtext){
+        
+    //});
+    res.render('home', {
+         pictures: modules.getunopics(),
+         login: req.session.loggedin,
+         username: req.session.username,
+         welcome : req.session.welcome,
+         });
 
 });
 app.get('/about', function(req, res) {
@@ -95,8 +98,7 @@ app.get('/login', function(req, res) {
 });
 app.get('/register', function(req, res) {
  res.render('register', {
-     incorrect_email :  req.session.incorrect_email,
-     unmatched_pass : req.session.unmatched_pass,
+    error :  req.session.error,
  });
 
 });
@@ -111,106 +113,60 @@ app.post('/auth', (req, res) => {
     //Grabbing Page vars
     const username = req.body.username;
     const password = req.body.password;
+    var data = [username, password];
+   // console.log(data);
     
-    //establishing sql connect using outside var for creds
-   var conn = mysql.createConnection(sqlcredentials.connection);
-    conn.connect(function(err) {
-    if (err) {
-        console.error("ERROR: cannot connect: " + err);
-        return;
-    }  
-      //creating sql var for query, query grabs the username and passoword from sql if it is equal to user input 
-      var sql = mysql.format("SELECT * FROM users WHERE username=? AND password=?", [username, password]);
-      //test log to see what the qeury will be 
-      //console.log(sql);
-        
-        conn.query(sql, function(err, results, fields) {
-        //query checks if the user actually exists with that password, if yes sets the session vars and redirects them back to home page
-        if(results.length > 0) {
-            req.session.loggedin = 'true';
-            req.session.username = username;
+    //Where loggin Happens from login framework 
+    login.login(data, function(err, returned){
+        console.log(returned);
+        if(returned === "success"){
             delete req.session.incoorect;
+            req.session.loggedin = "true";
+            req.session.username = username;
             res.redirect('/');
         }else{
-        //happens if user has wrong password or username, activates the pop up for incorrect username or password
-         req.session.username = '';
-         req.session.incoorect = 'on';
-         res.redirect('/login');
+            ////console.log("gets here");
+            delete req.session.loggedin;
+            req.session.incoorect = 'true';
+            res.redirect('/login');
         }
-     
-  });
-    conn.end();
-});
-    
+    });
 });
 
 //Adding new user, written by bailey 
 app.post('/registeruser?', (req, res) =>{
     //Grabbing Variables from page
-    
     var name =  req.body.name;
     var email =  req.body.email;
     var username =  req.body.username;
     var password =  req.body.password;
     var password_retype = req.body.passwordr;
     
-    var user = {
-        name : req.body.name,
-        email : req.body.email,
-        username : req.body.username,
-        password : req.body.password
-    }
-    //test to see if variables were coming through
-    //console.log(name + email + username + password + password_retype);
-    
+    var data = [name, email, username, password];
     //Now to process the variables to see if they are what we need. Going to check if email is an actual email and if password retype is correct 
   if(validator.isEmail(email) === false || password !== password_retype) {
       //activates session var Improper email
-      req.session.incorrect_email = "on"; 
+      req.session.error = "You Must Have mistyped something, Please Try again!";
       res.redirect('/register');
   } else{
       //deletes incorrect_email session var on second try if they do enter a correct one 
       delete req.session.incorrect_email; 
       
-      
-      
-      
-      var conn = mysql.createConnection(sqlcredentials.connection);
-    conn.connect(function(err) {
-    if (err) {
-        console.error("ERROR: cannot connect: " + err);
-        return;
-    }  
-      //creating sql var for query, query grabs the username and passoword from sql if it is equal to user input 
-      var sql = mysql.format("INSERT INTO users SET ?", user);
-      //test log to see what the qeury will be 
-      //console.log(sql);
-    conn.query(sql, function(err, results, fields) {
-       if (err) {
-        res.session.error_with_login = "on";
-        res.redirect('/register');
-        } else {
-            req.session.thankyou = "on";
-           res.redirect("/");
-           console.log("success");
-        }
-    }) 
-        
-     conn.end(); 
-  });
-   
-
-      
-      //Now inserts The user
-      
-      
-    }
-    
-   
-    
-    
-    
-    
+     register.register(data, function(err, data){
+         console.log(err);
+         console.log(data);
+         if(data === "success"){
+             req.session.loggedin = "true";
+             req.session.welcome = "Welcome " + name + "!";
+             res.redirect('/');
+         }else{
+             req.session.error = "You Must Have mistyped something, Please Try again!";
+             //console.log(req.session.error);
+             console.log("here");
+             res.redirect('/register');
+         }
+    });
+  }
 });
 
 

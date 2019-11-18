@@ -9,30 +9,33 @@ var sqlcredentials = require('../framework/sql.js');
 
 exports.GetPageInfo = function(name, table, callback) {
     var arr = [];
-   
-    var conn = mysql.createConnection(sqlcredentials.connection);
+   var conn = mysql.createConnection(sqlcredentials.connection);
     
-   conn.connect(function(err, callback) {
+    conn.connect(function(err) {
         if (err) {
             console.error("ERROR: cannot connect: " + err);
             return;
         }
-        var sql = mysql.format("SELECT ? FROM ?", [name, table]);
+        var sql = mysql.format("SELECT "+name+" FROM "+table+"");
         
-        sql = sql.replace(/["']/g, "");
         
         conn.query(sql, function(err, results, fields) {
            if (err) {
                 console.log("sup money bag");
             } else {
-               callback = results[0];
+              // callback = results[0];
+               callback({
+                   result: results[0];
+               });
             }
         })
-       console.log(callback);
+       //console.log(callback);
         conn.end();  
     }); 
 
   
 }
                  
-                 
+GetPageInfo("name", "table", function(result){
+    
+});               

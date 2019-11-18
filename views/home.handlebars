@@ -1,7 +1,10 @@
-{{#if thankyou}}
-    <div class="alert alert-success" role="alert" style="margin-top: 5px;">
-           Thankyou for Registering, We will email You when More information is available!
-        </div> 
+{{#if welcome}}
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+      {{ welcome }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     {{/if}}
 <div data-aos="fade-in" class="home-page" style="text-align: center; margin-top: 5%; color: white;">
     <h1 class="home-page-header">Welcome to the Point Park Uno League Official Website!</h1>

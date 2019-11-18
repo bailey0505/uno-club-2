@@ -42,9 +42,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/rules"><i class="fas fa-handshake"></i> Rules</a>
             </li> 
-             <li class="nav-item">
-                <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Sign Up</a>
-            </li> 
+             {{#if login}}
+            
+            {{else}}
+                 <li class="nav-item">
+                    <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Sign Up</a>
+                </li> 
+            {{/if}}
             
         </ul>
         <ul class="navbar-nav navbar-right">
