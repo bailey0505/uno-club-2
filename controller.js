@@ -26,6 +26,7 @@ var login = require('./framework/login.js');
 var register = require('./framework/register.js');
 var sqlcredentials = require('./framework/sql.js');
 var session_key = require('./framework/session.js');
+var contact = require('./framework/contact.js');
 //var PageVars = require('./framework/PageInfo.js');
 
 var app = express();
@@ -71,6 +72,7 @@ app.get('/', function(req, res) {
          login: req.session.loggedin,
          username: req.session.username,
          welcome : req.session.welcome,
+         FormSuccess : req.session.contactformsuccess,
          });
 
 });
@@ -79,7 +81,9 @@ app.get('/about', function(req, res) {
 
 });
 app.get('/contact', function(req, res) {
- res.render('contact');
+ res.render('contact', {
+     error : req.session.formerror,
+ });
 
 });
 app.get('/meetings', function(req, res) {
@@ -122,7 +126,7 @@ app.post('/auth', (req, res) => {
         if(returned === "success"){
             delete req.session.incoorect;
             req.session.loggedin = "true";
-            req.session.username = username;
+            req.session.welcome = "Welcome " + name + "!";
             res.redirect('/');
         }else{
             ////console.log("gets here");
@@ -168,7 +172,29 @@ app.post('/registeruser?', (req, res) =>{
     });
   }
 });
-
+//Submitting Contact Form
+app.post('/submitform', (req, res) =>{
+    var name = req.body.name;
+    var year = req.body.year;
+    var message = req.body.message;
+    var date = new Date();
+    
+    var send = [name, year, message, date];
+    
+    contact.contact(send, function(data){
+        console.log(data);
+        if(data === "success"){
+            delete req.session.formerror;
+            req.session.contactformsuccess = "Your form has been submitted and we will get back to you within the next couple of days " + name;
+            res.redirect('/');
+        }else{
+            req.session.formerror = data;
+            res.redirect('/contact');
+        }
+        
+    });
+    
+});
 
 app.use(function(req, res, next){
     res.status(404);
