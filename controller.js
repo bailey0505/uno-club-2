@@ -27,6 +27,7 @@ var register = require('./framework/register.js');
 var sqlcredentials = require('./framework/sql.js');
 var session_key = require('./framework/session.js');
 var contact = require('./framework/contact.js');
+var page = require('./framework/PageInfo.js')
 //var PageVars = require('./framework/PageInfo.js');
 
 var app = express();
@@ -74,6 +75,8 @@ app.get('/', function(req, res) {
          welcome : req.session.welcome,
          FormSuccess : req.session.contactformsuccess,
          });
+   delete req.session.contactformsuccess;
+   delete req.session.welcome;
 
 });
 app.get('/about', function(req, res) {
@@ -108,6 +111,7 @@ app.get('/register', function(req, res) {
 });
 app.get('/logout', function(req, res) {
     delete req.session.loggedin;
+    delete req.session.welcome;
     res.redirect('/');
 
 });
@@ -126,7 +130,7 @@ app.post('/auth', (req, res) => {
         if(returned === "success"){
             delete req.session.incoorect;
             req.session.loggedin = "true";
-            req.session.welcome = "Welcome " + name + "!";
+            req.session.welcome = "Welcome " + username + "!";
             res.redirect('/');
         }else{
             ////console.log("gets here");
@@ -190,7 +194,7 @@ app.post('/submitform', (req, res) =>{
         }else{
             req.session.formerror = data;
             res.redirect('/contact');
-        }
+        } 
         
     });
     

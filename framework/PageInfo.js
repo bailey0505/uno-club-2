@@ -7,7 +7,7 @@ var mysql = require('mysql');
 
 var sqlcredentials = require('../framework/sql.js');
 
-exports.GetPageInfo = function(name, table, callback) {
+exports.gethowtoplay = function(name, table, callback) {
     var arr = [];
    var conn = mysql.createConnection(sqlcredentials.connection);
     
