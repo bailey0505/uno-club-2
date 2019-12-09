@@ -84,14 +84,19 @@ app.get('/about', function(req, res) {
     page.getabout(function(status, founded, founder, CurrentPresident, CurrentVicePresident, CurrentTreasurer, awards){
         console.log(status);
         console.log(founded);
-        res.render('about', {
-             founded_text : founded,
-             founder_text : founder,
-             CurrentPresident_text : CurrentPresident,
-             CurrentVicePresident : CurrentVicePresident,
-             CurrentTreasurer_text : CurrentTreasurer,
-             awards_text : awards,
-        });
+		if(status === "success"){
+			res.render('about', {
+				 founded_text : founded,
+				 founder_text : founder,
+				 CurrentPresident_text : CurrentPresident,
+				 CurrentVicePresident : CurrentVicePresident,
+				 CurrentTreasurer_text : CurrentTreasurer,
+				 awards_text : awards,
+			});
+		}else {
+			res.render('about');
+			
+		}
     })
  });
 app.get('/contact', function(req, res) {
@@ -107,17 +112,22 @@ app.get('/meetings', function(req, res) {
 app.get('/rules', function(req, res) {
     page.gethowtoplay(function(status, headerbig, headersmall, generalparagraph, drawtwo, reverse, skip, wildcard, wildcardplusfour){
 		//console.log(headerbig);
-        res.render('rules', {
-			headerbig_text : headerbig,
-			headersmall_text : headersmall,
-			generalparagraph_text : generalparagraph,
-			drawtwo_text : drawtwo,
-			reverse_text : reverse,
-			skip_text : skip,
-			wildcard_text : wildcard,
-			wildcardplusfour_text : wildcardplusfour,
+		if(status === "success") {
+			res.render('rules', {
+				headerbig_text : headerbig,
+				headersmall_text : headersmall,
+				generalparagraph_text : generalparagraph,
+				drawtwo_text : drawtwo,
+				reverse_text : reverse,
+				skip_text : skip,
+				wildcard_text : wildcard,
+				wildcardplusfour_text : wildcardplusfour,
+				
+			});
+		}else {
+			res.render('rules');
 			
-		});
+		}
     });
 });
 app.get('/login', function(req, res) {
