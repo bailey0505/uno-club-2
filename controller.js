@@ -80,9 +80,20 @@ app.get('/', function(req, res) {
 
 });
 app.get('/about', function(req, res) {
- res.render('about');
-
-});
+    
+    page.getabout(function(status, founded, founder, CurrentPresident, CurrentVicePresident, CurrentTreasurer, awards){
+        console.log(status);
+        console.log(founded);
+        res.render('about', {
+             founded_text : founded,
+             founder_text : founder,
+             CurrentPresident_text : CurrentPresident,
+             CurrentVicePresident : CurrentVicePresident,
+             CurrentTreasurer_text : CurrentTreasurer,
+             awards_text : awards,
+        });
+    })
+ });
 app.get('/contact', function(req, res) {
  res.render('contact', {
      error : req.session.formerror,
@@ -94,6 +105,9 @@ app.get('/meetings', function(req, res) {
 });
 
 app.get('/rules', function(req, res) {
+    page.gethowtoplay(function(){
+        res.render('rules');
+    });
  res.render('rules');
 
 });
