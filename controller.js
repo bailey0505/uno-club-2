@@ -1,11 +1,11 @@
 /****************************
 
-Router For Point Park Uno Club Website App 
+Router For Point Park Uno Club Website App
 
 *****************************/
 
 
-//Required package for project 
+//Required package for project
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
@@ -38,8 +38,8 @@ app.use(require('cookie-parser')(session.user));
 
 app.use(express.static(__dirname + '/style'));
 app.use(express.static(__dirname + '/images'));
-app.use(express.static(__dirname + '/public')); 
-app.use(express.static(__dirname + '/videos')); 
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/videos'));
 
 
 app.use(cookieParser());
@@ -58,7 +58,7 @@ app.use(express.urlencoded());
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
- 
+
 
 app.set('port', process.env.PORT || 3000);
 
@@ -67,25 +67,30 @@ app.get('/', function(req, res) {
    // var log = PageVars.GetPageInfo("IntroText", "HomePage");
    // console.log(log);
     // PageVars.GetPageInfo("IntroText", "HomePage", function(introtext){
-        
+
     //});
-	gethome.getwinners(function(){
+	gethome.getwinners(function(status, First, MidFall, Spooky, BSUPartnered, FallSemester){
 		    res.render('home', {
 			 pictures: modules.getunopics(),
 			 login: req.session.loggedin,
 			 username: req.session.username,
 			 welcome : req.session.welcome,
 			 FormSuccess : req.session.contactformsuccess,
+			 First_text : First,
+			 MidFall_text : Midfall,
+			 Spooky_text : Spooky,
+			 BSUPartnered_text : BSUPartnered,
+			 FallSemester_text : FallSemester,
 			 });
 	   delete req.session.contactformsuccess;
 	   delete req.session.welcome;
 
 	});
 });
-	
+
 
 app.get('/about', function(req, res) {
-    
+
     page.getabout(function(status, founded, founder, CurrentPresident, CurrentVicePresident, CurrentTreasurer, awards){
         console.log(status);
         console.log(founded);
@@ -100,7 +105,7 @@ app.get('/about', function(req, res) {
 			});
 		}else {
 			res.render('about');
-			
+
 		}
     })
  });
@@ -127,11 +132,11 @@ app.get('/rules', function(req, res) {
 				skip_text : skip,
 				wildcard_text : wildcard,
 				wildcardplusfour_text : wildcardplusfour,
-				
+
 			});
 		}else {
 			res.render('rules');
-			
+
 		}
     });
 });
@@ -154,15 +159,15 @@ app.get('/logout', function(req, res) {
 
 });
 
-//Authenticating user login, written by bailey 
+//Authenticating user login, written by bailey
 app.post('/auth', (req, res) => {
     //Grabbing Page vars
     const username = req.body.username;
     const password = req.body.password;
     var data = [username, password];
    // console.log(data);
-    
-    //Where loggin Happens from login framework 
+
+    //Where loggin Happens from login framework
     login.login(data, function(err, returned){
         console.log(returned);
         if(returned === "success"){
@@ -179,7 +184,7 @@ app.post('/auth', (req, res) => {
     });
 });
 
-//Adding new user, written by bailey 
+//Adding new user, written by bailey
 app.post('/registeruser?', (req, res) =>{
     //Grabbing Variables from page
     var name =  req.body.name;
@@ -187,17 +192,17 @@ app.post('/registeruser?', (req, res) =>{
     var username =  req.body.username;
     var password =  req.body.password;
     var password_retype = req.body.passwordr;
-    
+
     var data = [name, email, username, password];
-    //Now to process the variables to see if they are what we need. Going to check if email is an actual email and if password retype is correct 
+    //Now to process the variables to see if they are what we need. Going to check if email is an actual email and if password retype is correct
   if(validator.isEmail(email) === false || password !== password_retype) {
       //activates session var Improper email
       req.session.error = "You Must Have mistyped something, Please Try again!";
       res.redirect('/register');
   } else{
-      //deletes incorrect_email session var on second try if they do enter a correct one 
-      delete req.session.incorrect_email; 
-      
+      //deletes incorrect_email session var on second try if they do enter a correct one
+      delete req.session.incorrect_email;
+
      register.register(data, function(err, data){
          console.log(err);
          console.log(data);
@@ -220,9 +225,9 @@ app.post('/submitform', (req, res) =>{
     var year = req.body.year;
     var message = req.body.message;
     var date = new Date();
-    
+
     var send = [name, year, message, date];
-    
+
     contact.contact(send, function(data){
         console.log(data);
         if(data === "success"){
@@ -232,10 +237,10 @@ app.post('/submitform', (req, res) =>{
         }else{
             req.session.formerror = data;
             res.redirect('/contact');
-        } 
-        
+        }
+
     });
-    
+
 });
 
 app.use(function(req, res, next){
@@ -251,6 +256,5 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
  console.log( 'Express started on http://localhost:' +
  app.get('port') + '; press Ctrl-C to terminate.' );
-    
-});
 
+});
