@@ -106,7 +106,10 @@ app.get('/meetings', function(req, res) {
 
 app.get('/rules', function(req, res) {
     page.gethowtoplay(function(){
-        res.render('rules');
+        res.render('rules', {
+			
+			
+		});
     });
  res.render('rules');
 
