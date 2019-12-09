@@ -3,21 +3,34 @@
         <style>
     
         </style>
-    <div class="row">
+		<!---
+			headerbig_text : headerbig,
+			headersmall_text : headersmall,
+			generalparagraph_text : generalparagraph,
+			drawtwo_text : drawtwo,
+			reverse_text : reverse,
+			skip_text : skip,
+			wildcard_text : wildcard,
+			wildcardplusfour_text : wildcardplusfour,
+		
+		
+		
+		-->
+		
+	<div class="row">
         <div class="col-md-12">
-            <h1>How To Play</h1>
+            <h1>{{ headerbig_text }}</h1>
         </div>
     </div> 
     <div class="row">
         <div class="col-md-12">
-            <h3>General</h3>
+            <h3>{{ headersmall_text }}</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-md-1 col-xs-0"></div>
          <div class="col-md-10 col-xs-12">
-            <p>Be the first to play all of your cards You many stack similar colors on the pile or similar numbers You may stack as many of the same number on top of itself as long as you have the correct number or color underneath You can stack draw 2s onto each other You can stack draw 4s onto each other You may not stack draw 2s and draw 4s on each other Reverse cards act as skip cards when there are two people You must call UNO when you have one card left If another person calls you out for not saying UNO with one card left you must draw 2
-            </p> 
+            <p>{{ generalparagraph_text }}</p> 
         </div>
         <div class="col-md-1 col-xs-0"></div>
     </div>
@@ -32,7 +45,7 @@
             <div class="card how-to-cards" style="background: rgba(0, 151, 19, 0);">
               <img src="/uno_cards/draw2.jpg" class="card-img-top" alt="Draw 2">
               <div class="card-body" styl>
-                <p class="card-text">Force the next person to draw two</p>
+                <p class="card-text">{{ drawtwo_text }}</p>
               </div>
             </div>
         </div>
@@ -40,7 +53,7 @@
             <div class="card how-to-cards" style="background: rgba(0, 151, 19, 0);">
                   <img src="/uno_cards/reverse.jpg" class="card-img-top" alt="Draw 2">
                   <div class="card-body">
-                    <p class="card-text">Rotate the order of people playing</p>
+                    <p class="card-text">{{ reverse_text }}</p>
                   </div>
                 </div>
         </div>
@@ -48,7 +61,7 @@
             <div class="card how-to-cards" style="background: rgba(0, 151, 19, 0);">
                   <img src="/uno_cards/skip.jpg" class="card-img-top" alt="Draw 2">
                   <div class="card-body">
-                    <p class="card-text">Skip the next person</p>
+                    <p class="card-text">{{ skip_text }}</p>
                   </div>
                 </div>
         </div>
@@ -56,7 +69,7 @@
             <div class="card how-to-cards" style="background: rgba(0, 151, 19, 0);">
                   <img src="/uno_cards/wild.jpg" class="card-img-top" alt="Draw 2">
                   <div class="card-body">
-                    <p class="card-text">Change the current color</p>
+                    <p class="card-text">{{ wildcard_text }}</p>
                   </div>
                 </div>
         </div>
@@ -64,7 +77,7 @@
             <div class="card how-to-cards" style="background: rgba(0, 151, 19, 0);">
                   <img src="/uno_cards/wild4.jpg" class="card-img-top" alt="Draw 2">
                   <div class="card-body">
-                    <p class="card-text">Change the color and force the next person to draw 4</p>
+                    <p class="card-text">{{ wildcardplusfour_text }}</p>
                   </div>
                 </div>
             </div>

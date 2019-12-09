@@ -105,14 +105,20 @@ app.get('/meetings', function(req, res) {
 });
 
 app.get('/rules', function(req, res) {
-    page.gethowtoplay(function(){
+    page.gethowtoplay(function(status, headerbig, headersmall, generalparagraph, drawtwo, reverse, skip, wildcard, wildcardplusfour){
+		//console.log(headerbig);
         res.render('rules', {
-			
+			headerbig_text : headerbig,
+			headersmall_text : headersmall,
+			generalparagraph_text : generalparagraph,
+			drawtwo_text : drawtwo,
+			reverse_text : reverse,
+			skip_text : skip,
+			wildcard_text : wildcard,
+			wildcardplusfour_text : wildcardplusfour,
 			
 		});
     });
- res.render('rules');
-
 });
 app.get('/login', function(req, res) {
     res.render('login', {
