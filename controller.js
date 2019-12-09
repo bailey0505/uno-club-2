@@ -69,7 +69,7 @@ app.get('/', function(req, res) {
     // PageVars.GetPageInfo("IntroText", "HomePage", function(introtext){
         
     //});
-	gethome.getwinners(function(){
+	
 		    res.render('home', {
 			 pictures: modules.getunopics(),
 			 login: req.session.loggedin,
@@ -81,7 +81,7 @@ app.get('/', function(req, res) {
 	   delete req.session.welcome;
 
 	});
-});
+
 	
 
 app.get('/about', function(req, res) {
