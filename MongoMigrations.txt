@@ -1,0 +1,28 @@
+use dbs UnoClub;
+
+
+create collection howtoplay
+{
+        "_id" : ObjectId("5dea5f9c13b70e518d23516a"),
+        "page" : "HowToPlay",
+        "headerbig" : "How To Play",
+        "headersmall" : "General",
+        "generalparagraph" : "Be the first to play all of your cards You many stack similar colors on the pile or similar numbers You may stack as many of the same number on top of itself as long as you have the correct number or color underneath You can stack draw 2s onto each other You can stack draw 4s onto each other You may not stack draw 2s and draw 4s on each other Reverse cards act as skip cards when there are two people You must call UNO when you have one card left If another person calls you out for not saying UNO with one card left you must draw 2",
+        "drawtwo" : "Force the next person to draw two",
+        "reverse" : "Rotate the order of people playing",
+        "skip" : "Skip the next person",
+        "wildcard" : "Change the current color",
+        "wildcardplusfour" : "Change the color and force the next person to draw 4"
+}
+
+create collection about
+{
+        "_id" : ObjectId("5dea5fbe13b70e518d235179"),
+        "page" : "aboutpage",
+        "founded" : "Fall of 2018",
+        "founder" : "Bryan Partika",
+        "CurrentPresident" : "Carlos Polanco",
+        "CurrentVicePresident" : "Justin Joyce",
+        "CurrentTreasurer" : "Kimberly Staments",
+        "awards" : "2018-2019 new club of the year"
+}
