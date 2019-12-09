@@ -27,7 +27,8 @@ var register = require('./framework/register.js');
 var sqlcredentials = require('./framework/sql.js');
 var session_key = require('./framework/session.js');
 var contact = require('./framework/contact.js');
-var page = require('./framework/PageInfo.js')
+var page = require('./framework/PageInfo.js');
+var gethome = require('./framework/home.js');
 //var PageVars = require('./framework/PageInfo.js');
 
 var app = express();
@@ -68,17 +69,21 @@ app.get('/', function(req, res) {
     // PageVars.GetPageInfo("IntroText", "HomePage", function(introtext){
         
     //});
-    res.render('home', {
-         pictures: modules.getunopics(),
-         login: req.session.loggedin,
-         username: req.session.username,
-         welcome : req.session.welcome,
-         FormSuccess : req.session.contactformsuccess,
-         });
-   delete req.session.contactformsuccess;
-   delete req.session.welcome;
+	gethome.getwinners(function(){
+		    res.render('home', {
+			 pictures: modules.getunopics(),
+			 login: req.session.loggedin,
+			 username: req.session.username,
+			 welcome : req.session.welcome,
+			 FormSuccess : req.session.contactformsuccess,
+			 });
+	   delete req.session.contactformsuccess;
+	   delete req.session.welcome;
 
+	});
 });
+	
+
 app.get('/about', function(req, res) {
     
     page.getabout(function(status, founded, founder, CurrentPresident, CurrentVicePresident, CurrentTreasurer, awards){
